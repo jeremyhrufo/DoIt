@@ -38,7 +38,7 @@
 		EB2BE4ED239524DB00FB933B = {
 			isa = PBXGroup;
 			children = (
-				EB2BE4F8239524DB00FB933B /* Todoey */,
+				EB2BE4F8239524DB00FB933B /* DoIt */,
 				EB2BE4F7239524DB00FB933B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,7 +51,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EB2BE4F8239524DB00FB933B /* Todoey */ = {
+		EB2BE4F8239524DB00FB933B /* DoIt */ = {
 			isa = PBXGroup;
 			children = (
 				EB2BE4F9239524DB00FB933B /* AppDelegate.swift */,
@@ -61,7 +61,7 @@
 				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
 				EB2BE507239524DC00FB933B /* Info.plist */,
 			);
-			path = Todoey;
+			path = DoIt;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
