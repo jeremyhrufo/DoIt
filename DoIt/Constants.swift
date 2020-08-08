@@ -8,8 +8,8 @@
 
 import Foundation
 
-class K {
+struct K {
     static let reusableCellName = "ToDoItemCell"
     static let emptyString = ""
-    static let keyValueNameForList = "ToDoListArray"
+    static let keyValueNameForList = "DoItList"
 }
