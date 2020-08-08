@@ -12,4 +12,5 @@ struct K {
     static let reusableCellName = "ToDoItemCell"
     static let emptyString = ""
     static let keyValueNameForList = "DoItList"
+    static let doItItemsPListName = "DoIt.plist"
 }
