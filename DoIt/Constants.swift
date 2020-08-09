@@ -8,8 +8,10 @@
 import Foundation
 
 struct K {
-    static let reusableCellName = "ToDoItemCell"
+    static let itemReusableCellName = "ToDoItemCell"
+    static let categoryReusableCellName = "CategoryCell"
     static let emptyString = ""
     static let keyValueNameForList = "DoItList"
     static let doItItemsPListName = "DoIt.plist"
+    static let goToItemsSegue = "goToItems"
 }
