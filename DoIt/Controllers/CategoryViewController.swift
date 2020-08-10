@@ -3,19 +3,20 @@
 //  DoIt
 //
 //  Created by Jeremy Rufo on 8/9/20.
+//  Copyright © 2020 JRufo, LLC. All rights reserved.
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
     //MARK: - Members
-    var categories: [Category] = [Category]()
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let realm = try! Realm()
+    var categories: Results<Category>?
 
     //MARK: - Normal functionality
-    override func viewDidLoad () {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         retrieveData()
     }
 
@@ -32,10 +33,8 @@ class CategoryViewController: UITableViewController {
 
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             // Grab the text out of the alert text field and save it
-            if let text = alert.textFields?.first?.text {
-                if self.addCategory(text) {
-                    self.saveData()
-                }
+            if let name = alert.textFields?.first?.text {
+                self.save(category: Category(with: name))
             }
         }))
 
@@ -46,16 +45,16 @@ class CategoryViewController: UITableViewController {
 //MARK: - Tableview Datasource Methods
 extension CategoryViewController {
     override func tableView (_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.categories.count
+        return self.categories?.count ?? 1
     }
 
     override func tableView (_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Get the reusable cell
         let cell = tableView.dequeueReusableCell(withIdentifier: K.categoryReusableCellName, for: indexPath)
-        let category = self.categories[indexPath.row]
+        let category = self.categories?[indexPath.row]
 
         // Set default label and accessory and return the cell
-        cell.textLabel?.text = "(\(category.items?.count ?? 0)) " + "\(category.name ?? "<No Name>")"
+        cell.textLabel?.text = "(\(category?.items.count ?? 0)) " + "\(category?.name ?? "No Categories Added Yet")"
         return cell
     }
 }
@@ -66,60 +65,43 @@ extension CategoryViewController {
         // Navigate to the View Controller
         self.performSegue(withIdentifier: K.goToItemsSegue, sender: self)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+    override func prepare (for segue: UIStoryboardSegue, sender: Any?) {
         // Set up our destination view controller for the items that belong to our selected category
         let destinationVC = segue.destination as! TodoListViewController
-        
+
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationVC.selectedCategory = categories[indexPath.row]
+            destinationVC.selectedCategory = categories?[indexPath.row]
         }
     }
 }
 
 //MARK: - Storage functions
 extension CategoryViewController {
-    // Retrieve our data with passed in NSFetchRequest
-    func retrieveData (with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        do {
-            self.categories = try context.fetch(request)
-        } catch {
-            print("Error fetching data from context, \(error)")
-        }
-
-        // reload our table
-        self.tableView?.reloadData()
+    // Retrieve our data with type Category.self
+    func retrieveData() {
+        categories = realm.objects(Category.self).sorted(byKeyPath: "dateCreated", ascending: true)
+        self.reloadTable()
     }
 
     // Save our data in core data
-    func saveData () {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context, \(error)")
+    func save (category: Category?) {
+        if let value = category {
+            do {
+                try realm.write {
+                    realm.add(value)
+                }
+            } catch {
+                print("Error saving category to realm, \(error)")
+            }
         }
-
-        // reload our table
-        self.tableView?.reloadData()
+        self.reloadTable()
     }
 }
 
 //MARK: - Utility functions
 extension CategoryViewController {
-    // Add a category to our local array if the string passed in isn't empty
-    func addCategory (_ name: String) -> Bool {
-        if name.isEmpty {
-            return false
-        }
-
-        self.categories.append(self.createCategory(name))
-        return true
-    }
-
-    // Create a Category
-    func createCategory (_ name: String) -> Category {
-        let category = Category(context: self.context)
-        category.name = name
-        return category
+    func reloadTable() {
+        self.tableView.reloadData()
     }
 }

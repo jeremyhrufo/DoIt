@@ -3,6 +3,7 @@
 //  DoIt
 //
 //  Created by Jeremy Rufo on 8/7/20.
+//  Copyright © 2020 JRufo, LLC. All rights reserved.
 //
 
 import Foundation
