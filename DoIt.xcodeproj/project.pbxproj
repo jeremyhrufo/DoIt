@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F135ECE24E1A28200E74E24 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F135ECD24E1A28200E74E24 /* Item.swift */; };
 		1F135ED024E1A29100E74E24 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F135ECF24E1A29100E74E24 /* Category.swift */; };
+		1F18738C24E2D9E700666033 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18738B24E2D9E700666033 /* SwipeTableViewController.swift */; };
 		1F62415324DDDDE800D4CD83 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F62415224DDDDE800D4CD83 /* Constants.swift */; };
 		1F70D4FE24E0A65A00F35B90 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70D4FD24E0A65A00F35B90 /* CategoryViewController.swift */; };
 		7D29F12BEB2D56E1C9F533D7 /* Pods_DoIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CA04976ACAEFC143C5E93D /* Pods_DoIt.framework */; };
@@ -22,6 +23,7 @@
 /* Begin PBXFileReference section */
 		1F135ECD24E1A28200E74E24 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		1F135ECF24E1A29100E74E24 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		1F18738B24E2D9E700666033 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		1F62415224DDDDE800D4CD83 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1F70D4FD24E0A65A00F35B90 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		6B25E0AC8EB9778B1264E927 /* Pods-DoIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoIt.debug.xcconfig"; path = "Target Support Files/Pods-DoIt/Pods-DoIt.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 			children = (
 				1F70D4FD24E0A65A00F35B90 /* CategoryViewController.swift */,
 				EB2BE4FD239524DB00FB933B /* TodoListViewController.swift */,
+				1F18738B24E2D9E700666033 /* SwipeTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -250,6 +253,7 @@
 				1F70D4FE24E0A65A00F35B90 /* CategoryViewController.swift in Sources */,
 				EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
+				1F18738C24E2D9E700666033 /* SwipeTableViewController.swift in Sources */,
 				1F135ECE24E1A28200E74E24 /* Item.swift in Sources */,
 				1F62415324DDDDE800D4CD83 /* Constants.swift in Sources */,
 				1F135ED024E1A29100E74E24 /* Category.swift in Sources */,

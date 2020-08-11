@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableController {
     //MARK: - Members
     let realm = try! Realm()
     var categories: Results<Category>?
@@ -49,12 +49,13 @@ extension CategoryViewController {
     }
 
     override func tableView (_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Get the reusable cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.categoryReusableCellName, for: indexPath)
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+
         let category = self.categories?[indexPath.row]
 
         // Set default label and accessory and return the cell
         cell.textLabel?.text = "(\(category?.items.count ?? 0)) " + "\(category?.name ?? "No Categories Added Yet")"
+
         return cell
     }
 }
@@ -78,7 +79,6 @@ extension CategoryViewController {
 
 //MARK: - Storage functions
 extension CategoryViewController {
-    // Retrieve our data with type Category.self
     func retrieveData() {
         categories = realm.objects(Category.self).sorted(byKeyPath: "dateCreated", ascending: true)
         self.reloadTable()
@@ -94,8 +94,23 @@ extension CategoryViewController {
             } catch {
                 print("Error saving category to realm, \(error)")
             }
+            self.reloadTable()
         }
-        self.reloadTable()
+    }
+}
+
+//MARK: - SwipeTableViewController Protocol
+extension CategoryViewController {
+    func deleteCell(indexPath: IndexPath) {
+        if let item = self.categories?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(item)
+                }
+            } catch {
+                print("Error deleting category in realm, \(error)")
+            }
+        }
     }
 }
 
