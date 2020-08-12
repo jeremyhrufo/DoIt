@@ -17,12 +17,12 @@ import RealmSwift
     // inverse relationship
     var parentCategory = LinkingObjects(fromType: Category.self, property: "items")
 
-    init (title: String) {
+    init (with title: String) {
         self.title = title
         self.dateCreated = Date()
     }
 
     required convenience init () {
-        self.init(title: K.emptyString)
+        self.init(with: K.emptyString)
     }
 }

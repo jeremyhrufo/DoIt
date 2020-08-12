@@ -14,4 +14,5 @@ struct K {
     static let keyValueNameForList = "DoItList"
     static let doItItemsPListName = "DoIt.plist"
     static let goToItemsSegue = "goToItems"
+    static let defaultColor = "#FFFFFF" // White
 }

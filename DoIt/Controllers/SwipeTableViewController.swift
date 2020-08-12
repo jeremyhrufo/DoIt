@@ -18,12 +18,13 @@ typealias SwipeTableController = SwipeTableViewController & SwipeTableViewContro
 class SwipeTableViewController:
     UITableViewController,
     SwipeTableViewCellDelegate {
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 70
+        tableView.separatorStyle = .none
     }
-    
+
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil }
 
@@ -54,5 +55,10 @@ class SwipeTableViewController:
         cell.delegate = self
 
         return cell
+    }
+    
+    //MARK: - Other functions
+    func reloadTable() {
+        tableView.reloadData()
     }
 }

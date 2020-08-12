@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class CategoryViewController: SwipeTableController {
     //MARK: - Members
@@ -18,6 +19,16 @@ class CategoryViewController: SwipeTableController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         retrieveData()
+
+        guard let navBar = navigationController?.navigationBar else { fatalError("Nav controller is nil") }
+        if let barColor = UIColor(hexString: "1D9BF6") {
+            navBar.barTintColor = barColor
+            navBar.backgroundColor = barColor
+
+            let contrastColor = ContrastColorOf(barColor, returnFlat: true)
+            navBar.tintColor = contrastColor
+            navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: contrastColor]
+        }
     }
 
     @IBAction func addButtonPressed (_ sender: UIBarButtonItem) {
@@ -34,7 +45,7 @@ class CategoryViewController: SwipeTableController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             // Grab the text out of the alert text field and save it
             if let name = alert.textFields?.first?.text {
-                self.save(category: Category(with: name))
+                self.save(category: Category(with: name, and: UIColor.randomFlat().hexValue()))
             }
         }))
 
@@ -45,16 +56,21 @@ class CategoryViewController: SwipeTableController {
 //MARK: - Tableview Datasource Methods
 extension CategoryViewController {
     override func tableView (_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.categories?.count ?? 1
+        return categories?.count ?? 1
     }
 
     override func tableView (_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
-        let category = self.categories?[indexPath.row]
-
-        // Set default label and accessory and return the cell
-        cell.textLabel?.text = "(\(category?.items.count ?? 0)) " + "\(category?.name ?? "No Categories Added Yet")"
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = "(\(category.items.count)) " + "\(category.name)"
+            if let color = UIColor(hexString: category.colorHexString) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
+        } else {
+            cell.textLabel?.text = "No Categories Added Yet"
+        }
 
         return cell
     }
@@ -64,7 +80,7 @@ extension CategoryViewController {
 extension CategoryViewController {
     override func tableView (_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Navigate to the View Controller
-        self.performSegue(withIdentifier: K.goToItemsSegue, sender: self)
+        performSegue(withIdentifier: K.goToItemsSegue, sender: self)
     }
 
     override func prepare (for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,7 +97,7 @@ extension CategoryViewController {
 extension CategoryViewController {
     func retrieveData() {
         categories = realm.objects(Category.self).sorted(byKeyPath: "dateCreated", ascending: true)
-        self.reloadTable()
+        reloadTable()
     }
 
     // Save our data in core data
@@ -94,7 +110,7 @@ extension CategoryViewController {
             } catch {
                 print("Error saving category to realm, \(error)")
             }
-            self.reloadTable()
+            reloadTable()
         }
     }
 }
@@ -102,21 +118,14 @@ extension CategoryViewController {
 //MARK: - SwipeTableViewController Protocol
 extension CategoryViewController {
     func deleteCell(indexPath: IndexPath) {
-        if let item = self.categories?[indexPath.row] {
+        if let item = categories?[indexPath.row] {
             do {
-                try self.realm.write {
-                    self.realm.delete(item)
+                try realm.write {
+                    realm.delete(item)
                 }
             } catch {
                 print("Error deleting category in realm, \(error)")
             }
         }
-    }
-}
-
-//MARK: - Utility functions
-extension CategoryViewController {
-    func reloadTable() {
-        self.tableView.reloadData()
     }
 }
